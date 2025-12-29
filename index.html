@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gramado 26">
+    
+    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/192/coniferous-tree.png">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/96/coniferous-tree.png">
+
+    <title>Roteiro Gramado 2026</title>
+    
+    <style>
+        :root {
+            --bg-body: #000000;
+            --bg-card: #1c1c1e;
+            --accent-blue: #0A84FF;
+            --accent-green: #30D158;
+            --accent-purple: #BF5AF2;
+            --accent-orange: #FF9F0A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #98989D;
+            --divider: #38383A;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+            margin: 0;
+            padding: 50px 20px 90px 20px;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        h1 { font-size: 28px; font-weight: 700; margin: 0; letter-spacing: -0.5px; line-height: 1.2; }
+        .subtitle { color: var(--text-secondary); font-size: 15px; margin: 8px 0 30px 0; font-weight: 400; }
+
+        .day-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .day-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(255,255,255,0.02);
+            transition: background 0.2s;
+        }
+        .day-header:active { background: rgba(255,255,255,0.08); }
+        
+        .day-info h2 { font-size: 18px; margin: 0; font-weight: 600; }
+        .day-info span { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: block; margin-bottom: 4px; }
+        .arrow { transition: transform 0.3s ease; font-size: 14px; color: var(--text-secondary); }
+        .day-header.active .arrow { transform: rotate(180deg); }
+
+        .day-content { display: none; padding: 0 20px 24px 20px; border-top: 1px solid var(--divider); }
+        
+        .event { 
+            position: relative; 
+            padding-left: 24px; 
+            margin-top: 24px; 
+            border-left: 2px solid var(--divider);
+        }
+        .event:last-child { border-left-color: transparent; }
+        
+        .dot {
+            position: absolute; left: -6px; top: 0;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--accent-blue);
+            box-shadow: 0 0 0 4px var(--bg-card);
+        }
+        .type-food .dot { background: var(--accent-green); }
+        .type-show .dot { background: var(--accent-purple); }
+        .type-log .dot { background: var(--accent-orange); }
+
+        .time { font-size: 13px; color: var(--text-secondary); font-weight: 600; margin-bottom: 4px; }
+        .title { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+        
+        .desc { font-size: 14px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 10px; }
+
+        .tourist-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--text-secondary);
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 12px;
+        }
+        .tourist-info p {
+            margin: 0;
+            font-size: 13px;
+            color: #E0E0E0;
+            line-height: 1.5;
+            font-style: italic;
+        }
+        .tourist-info strong { color: #FFF; font-style: normal; display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 4px; opacity: 0.7; }
+
+        .tag { 
+            display: inline-block; padding: 4px 8px; border-radius: 6px; 
+            font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;
+        }
+        .tag-imp { background: rgba(255, 159, 10, 0.2); color: var(--accent-orange); }
+        .tag-vip { background: rgba(10, 132, 255, 0.2); color: var(--accent-blue); }
+
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        
+        .btn {
+            flex: 1; min-width: 130px; display: inline-flex; align-items: center; justify-content: center;
+            height: 44px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: transform 0.1s, opacity 0.2s;
+        }
+        .btn:active { opacity: 0.7; transform: scale(0.98); }
+        
+        .btn-nav { background: rgba(66, 133, 244, 0.2); color: #4285F4; }
+        .btn-nav-secret { background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); border: 1px solid rgba(255,159,10,0.3); }
+        .btn-ticket { background: rgba(191, 90, 242, 0.15); color: var(--accent-purple); }
+        .btn-call { background: rgba(48, 209, 88, 0.15); color: var(--accent-green); }
+        .icon { margin-right: 8px; font-style: normal; }
+
+        .check-item { display: flex; align-items: center; padding: 14px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 8px; }
+        .check-item label { margin-left: 14px; font-size: 15px; flex: 1; }
+        input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--accent-green); border-radius: 6px; }
+
+    </style>
+</head>
+<body>
+
+    <h1>Raonny, Felipe & Neta</h1>
+    <p class="subtitle">Guia VIP & Logística Gramado 2026</p>
+
+    <div class="day-card">
+        <div class="day-header" onclick="toggle('c0', this)">
+            <div class="day-info"><span>05 JAN • SEGUNDA</span><h2>Aterrissagem Suave</h2></div>
+            <div class="arrow">▼</div>
+        </div>
+        <div id="c0" class="day-content">
+            <div class="event type-log">
+                <div class="dot"></div>
+                <div class="time">20:00</div>
+                <div class="title">Check-in Base Canela</div>
+                <div class="desc">Rua Ernesto Urbani, 37. Carro na garagem. A partir daqui, é tudo a pé.</div>
+                <div class="btn-group">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Rua+Ernesto+Urbani+37+Canela" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Ir para Hotel</a>
+                </div>
+            </div>
+            <div class="event type-food">
+                <div class="dot"></div>
+                <div class="time">20:30</div>
+                <div class="title">Jantar: Estação Férreo</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Antiga estação de trem de 1924, revitalizada. O restaurante Férreo mantém vagões originais da época, combinando história ferroviária com alta gastronomia.</p>
+                </div>
+                <div class="desc">Dica: Pedir mesa dentro do vagão.</div>
+                <div class="btn-group">
+                    <a href="http://www.ferreo.com.br/" class="btn btn-ticket" target="_blank"><i class="icon">📅</i>Site Oficial</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Ferreo+Restaurante+Canela" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Mapa</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card">
+        <div class="day-header" onclick="toggle('c1', this)">
+            <div class="day-info"><span>06 JAN • TERÇA</span><h2>Clássicos VIP (Sem Trânsito)</h2></div>
+            <div class="arrow">▼</div>
+        </div>
+        <div id="c1" class="day-content">
+            <div class="event type-log">
+                <div class="dot"></div>
+                <div class="time">09:00</div>
+                <div class="title">Saída "Pulo do Gato"</div>
+                <span class="tag tag-imp">Rota Forçada Google Maps</span>
+                <div class="desc">GPS configurado para passar via Mato Queimado e fugir do centro.</div>
+                <div class="btn-group">
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Lago+Negro&waypoints=Estrada+do+Mato+Queimado,Gramado" class="btn btn-nav-secret" target="_blank"><i class="icon">🛡️</i>Rota Tática</a>
+                </div>
+            </div>
+
+            <div class="event">
+                <div class="dot"></div>
+                <div class="time">09:40</div>
+                <div class="title">Lago Negro & Carrieri</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Um cenário de cinema criado artificialmente nos anos 50 após um incêndio. As árvores que o cercam foram importadas da Floresta Negra da Alemanha, dando o nome ao local.</p>
+                </div>
+                <div class="desc">Passeio plano. Carrieri ao lado é o refúgio silencioso.</div>
+            </div>
+
+            <div class="event type-food">
+                <div class="dot"></div>
+                <div class="time">12:00</div>
+                <div class="title">Almoço: Casa Figueira</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Localizado na Várzea Grande, bairro histórico onde Gramado começou. Oferece a autêntica culinária dos imigrantes com vista para um vale preservado.</p>
+                </div>
+                <div class="desc">Retorno tático via Pórtico/Taquara.</div>
+                <div class="btn-group">
+                    <a href="https://restaurantecasafigueira.com.br/" class="btn btn-ticket" target="_blank"><i class="icon">🌐</i>Site / Reserva</a>
+                    <a href="tel:+5554999905760" class="btn btn-call"><i class="icon">📞</i>Ligar</a>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Restaurante+Casa+Figueira&waypoints=Portico+Via+Taquara,Gramado" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Rota Segura</a>
+                </div>
+            </div>
+
+            <div class="event">
+                <div class="dot"></div>
+                <div class="time">14:15</div>
+                <div class="title">Le Jardin (Lavandas)</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>O primeiro parque de lavandas do Brasil. Inspirado na região da Provence (França), cultiva diversas espécies da flor e estufas exóticas.</p>
+                </div>
+                <div class="desc">Prove o Apfelstrudel no café.</div>
+                <div class="btn-group">
+                    <a href="https://lavandas.com.br/" class="btn btn-ticket" target="_blank"><i class="icon">ℹ️</i>Site Oficial</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Le+Jardin+Parque+de+Lavanda" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Mapa</a>
+                </div>
+            </div>
+             <div class="event type-log">
+                <div class="dot"></div>
+                <div class="time">16:30</div>
+                <div class="title">Recarga de Energia</div>
+                <div class="desc">Pausa no hotel. Essencial para a noite.</div>
+            </div>
+             <div class="event type-food">
+                <div class="dot"></div>
+                <div class="time">19:30</div>
+                <div class="title">Jantar: Chateau de La Fondue</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Um dos mais tradicionais de Gramado. Oferece a experiência clássica de fondue com qualidade superior e preço justo. Ambiente amplo e elegante.</p>
+                </div>
+                <span class="tag tag-vip">Fondue Clássico</span>
+                <div class="btn-group">
+                     <a href="https://www.chateaudelafondue.com.br/" class="btn btn-ticket" target="_blank"><i class="icon">🌐</i>Site Oficial</a>
+                     <a href="https://www.google.com/maps/search/?api=1&query=Chateau+de+La+Fondue+Gramado" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Ir Agora</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card">
+        <div class="day-header" onclick="toggle('c2', this)">
+            <div class="day-info"><span>07 JAN • QUARTA</span><h2>Alturas & Desfile</h2></div>
+            <div class="arrow">▼</div>
+        </div>
+        <div id="c2" class="day-content">
+            <div class="event">
+                <div class="dot"></div>
+                <div class="time">10:30</div>
+                <div class="title">Bondinhos Aéreos</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Proporciona a vista mais frontal da famosa Cascata do Caracol (131 metros). Ao contrário do parque vizinho, aqui a tecnologia suíça garante acessibilidade total sem escadas.</p>
+                </div>
+                <span class="tag tag-vip">Conforto Total</span>
+                <div class="btn-group">
+                    <a href="http://www.parquesdaserra.com.br/" class="btn btn-ticket" target="_blank"><i class="icon">🎟️</i>Ingressos</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Bondinhos+Aereos+Canela" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Google Maps</a>
+                </div>
+            </div>
+
+            <div class="event">
+                <div class="dot"></div>
+                <div class="time">15:30</div>
+                <div class="title">Tour do Chocolate & Compras</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Passeio relaxante pelo "Quadrilátero de Ouro". Inclui a Rua Coberta e a Av. Borges de Medeiros. Paradas obrigatórias na Prawer (pioneira) e Lugano para degustação.</p>
+                </div>
+                <span class="tag tag-vip">Degustação & Vitrines</span>
+                <div class="desc">Estacionem perto da Rua Coberta e façam tudo a pé.</div>
+            </div>
+
+            <div class="event type-food">
+                <div class="dot"></div>
+                <div class="time">16:45</div>
+                <div class="title">Pause: Sereníssima Panetteria</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Inspirada em Veneza, esta padaria e confeitaria é um refúgio de charme no centro. Perfeita para um café e doces artesanais antes do evento noturno.</p>
+                </div>
+                <span class="tag tag-vip">Pit-Stop Obrigatório</span>
+                <div class="btn-group">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Serenissima+Panetteria+Av+Borges+de+Medeiros+3271+Gramado" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Ir Agora</a>
+                </div>
+            </div>
+
+            <div class="event type-show">
+                <div class="dot"></div>
+                <div class="time">18:30</div>
+                <div class="title">Logística: Grande Desfile</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Uma superprodução com carros alegóricos, acrobatas e luzes que conta a história do Natal de forma lúdica. É o evento mais tradicional da cidade.</p>
+                </div>
+                <div class="desc">Mover o carro para ExpoGramado.</div>
+                <div class="btn-group">
+                    <a href="https://natalluz.ingressos.com.br/eventos?gad_source=1&gad_campaignid=21722424387&gbraid=0AAAAA-PQOwu0yPT79g7XD-6c9oi2HW7dl&gclid=Cj0KCQiAx8PKBhD1ARIsAKsmGbdJi9Q9-lKn61j2JGQDM3VFGlBynXRHi45DmBXC7Z3rpb0z6UTJ6BoaAgifEALw_wcB" class="btn btn-ticket" target="_blank"><i class="icon">🎟️</i>Natal Luz</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=ExpoGramado" class="btn btn-nav" target="_blank"><i class="icon">🅿️</i>Estacionamento</a>
+                </div>
+            </div>
+
+            <div class="event type-food">
+                <div class="dot"></div>
+                <div class="time">21:30</div>
+                <div class="title">Jantar: Cantina Tagliarini</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Cantina italiana clássica no coração de Gramado. Famosa pelo seu rodízio de massas caseiras, risotos e grelhados.</p>
+                </div>
+                <span class="tag tag-vip">Italiano Raiz</span>
+                <div class="btn-group">
+                     <a href="https://restaurantetagliarini.com.br/" class="btn btn-ticket" target="_blank"><i class="icon">🌐</i>Site Oficial</a>
+                     <a href="https://www.google.com/maps/search/?api=1&query=Cantina+Tagliarini+Gramado" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Ir Agora</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card">
+        <div class="day-header" onclick="toggle('c3', this)">
+            <div class="day-info"><span>08 JAN • QUINTA</span><h2>Despedida & Show Final</h2></div>
+            <div class="arrow">▼</div>
+        </div>
+        <div id="c3" class="day-content">
+            <div class="event">
+                <div class="dot"></div>
+                <div class="time">10:00</div>
+                <div class="title">Castelinho Caracol</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Uma das primeiras residências de Canela (1913), famosa pelo museu e pelo lendário Apfelstrudel. Atenção: Fecha às 13h!</p>
+                </div>
+                <span class="tag tag-vip">Clássico Histórico</span>
+                <div class="btn-group">
+                    <a href="http://www.castelinhocaracol.com.br/" class="btn btn-ticket" target="_blank"><i class="icon">🎟️</i>Site Oficial</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Castelinho+Caracol+Canela" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Ir Agora</a>
+                </div>
+            </div>
+
+            <div class="event type-food">
+                <div class="dot"></div>
+                <div class="time">13:30</div>
+                <div class="title">Almoço Leve (Sugestão)</div>
+                <div class="desc">Parada no Containner Bistrot ou similar no centro antes de seguir.</div>
+                <div class="btn-group">
+                     <a href="https://www.google.com/maps/search/?api=1&query=Containner+Bistrot+Canela" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Containner Bistrot</a>
+                </div>
+            </div>
+
+            <div class="event">
+                <div class="dot"></div>
+                <div class="time">15:00</div>
+                <div class="title">Rua Torta & Centro</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Conhecida como Ladeira das Flores, seu formato sinuoso foi inspirado na Lombard Street da Califórnia. Fica em frente à Praça das Etnias.</p>
+                </div>
+                <div class="desc">Parada estratégica na base (Praça).</div>
+                <div class="btn-group">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Praca+das+Etnias+Gramado" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Praça (Base da Rua)</a>
+                </div>
+            </div>
+
+            <div class="event type-show">
+                <div class="dot"></div>
+                <div class="time">19:30</div>
+                <div class="title">Nativitaten (Serra Park)</div>
+                <div class="tourist-info">
+                    <strong>O Que Saber</strong>
+                    <p>Um espetáculo grandioso sobre as águas, com cantores líricos, fogos e um show de luzes emocinante para encerrar a viagem.</p>
+                </div>
+                <span class="tag tag-imp">Rota de Saída</span>
+                <div class="btn-group">
+                    <a href="https://natalluz.ingressos.com.br/eventos?gad_source=1&gad_campaignid=21722424387&gbraid=0AAAAA-PQOwu0yPT79g7XD-6c9oi2HW7dl&gclid=Cj0KCQiAx8PKBhD1ARIsAKsmGbdJi9Q9-lKn61j2JGQDM3VFGlBynXRHi45DmBXC7Z3rpb0z6UTJ6BoaAgifEALw_wcB" class="btn btn-ticket" target="_blank"><i class="icon">🎟️</i>Natal Luz</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Serra+Park+Gramado" class="btn btn-nav" target="_blank"><i class="icon">📍</i>Serra Park</a>
+                </div>
+            </div>
+
+             <div class="event type-log">
+                <div class="dot"></div>
+                <div class="time">21:30</div>
+                <div class="title">Partida Imediata</div>
+                <div class="desc">Rota direta via RS-115. Sem retorno ao centro.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card" style="border-color: var(--accent-orange);">
+        <div class="day-header" onclick="toggle('check', this)">
+            <div class="day-info"><span style="color:var(--accent-orange)">CHECKLIST</span><h2>Reservas Confirmadas</h2></div>
+            <div class="arrow">▼</div>
+        </div>
+        <div id="check" class="day-content">
+            <div class="check-item"><input type="checkbox"><label>Ingressos Grande Desfile (07/01)</label></div>
+            <div class="check-item"><input type="checkbox"><label>Ingressos Nativitaten (08/01)</label></div>
+            <div class="check-item"><input type="checkbox"><label>Reserva Casa Figueira</label></div>
+            <div class="check-item"><input type="checkbox"><label>Reserva Férreo</label></div>
+             <div class="check-item"><input type="checkbox"><label>Reserva Chateau de La Fondue</label></div>
+             <div class="check-item"><input type="checkbox"><label>Reserva Cantina Tagliarini</label></div>
+        </div>
+    </div>
+
+    <script>
+        function toggle(id, headerElement) {
+            var content = document.getElementById(id);
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                headerElement.classList.remove("active");
+            } else {
+                content.style.display = "block";
+                headerElement.classList.add("active");
+            }
+        }
+    </script>
+</body>
+</html>
